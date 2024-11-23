@@ -1,0 +1,3 @@
+[submodule "cds-healpix-rust"]
+	path = cds-healpix-rust
+	url = https://github.com/cds-astro/cds-healpix-rust
