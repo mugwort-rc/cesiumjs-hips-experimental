@@ -76,6 +76,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     window.createTile = async function(urlbase, order0, pix0, pix_order=4) {
       // First index of high-resolution pixels
+      // It means zero filled bits: 0b[pix0]0000...0000
       const base = BigInt(pix0) << BigInt(pix_order * 2);
       // Generating tile count
       const resolution = 1 << pix_order;
@@ -93,11 +94,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       const last = resolution - 1;
       for (let y = 0; y < resolution; ++y) {
         const i0 = y * resolution;
+        // Make bits: 0bY0Y0...Y0Y0
         const yb = spread_bits(y) << 1n;
         const index_offset0 = resolution * y;
         for (let x = 0; x < resolution; ++x) {
           const xx = last - x;
+          // Make bits: 0b0X0X...0X0X
           const xb = spread_bits(x);
+          // Combine bits: 0b[base]YXYX...YXYX
           const nest = Number(base + yb + xb);
           // [s, e, n, w]
           const vertices = healpix.nestedVertices(order, nest);
